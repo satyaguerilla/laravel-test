@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Date;
 class EventsController extends BaseController
 {
     public function getWarmupEvents() {
-        return Event::all();
+        return Event::with('workshops')->get();
     }
 
     /*
