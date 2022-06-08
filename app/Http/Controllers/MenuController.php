@@ -95,6 +95,22 @@ class MenuController extends BaseController
      */
 
     public function getMenuItems() {
-        throw new \Exception('implement in coding task 3');
+        $menuItems = MenuItem::all();
+        $this->build_hierarchy($menuItems);
+        return collect([$menuItems->first()]);
+    }
+
+    private function build_hierarchy(&$collection, $parent = NULL)
+    {
+        $tmp_collection = collect([]);
+        foreach($collection as $item)
+        {
+            if($item->parent_id == $parent)
+            {
+                $item->children = $this->build_hierarchy($collection, $item->id);
+                $tmp_collection->push($item);
+            }
+        }
+        return $tmp_collection;
     }
 }
